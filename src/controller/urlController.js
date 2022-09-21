@@ -2,24 +2,24 @@ const urlModel = require('../models/urlModel')
 const validUrl = require('valid-url');
 const shortid = require('shortid');
 
-// const redis = require('redis');
+const redis = require('redis');
 const { promisify } = require("util");
 
 
 
 //Connect to redis=================================================
-// const redisClient = redis.createClient(
-//     17425,
-//     "redis-17425.c264.ap-south-1-1.ec2.cloud.redislabs.com",
-//     { no_ready_check: true }
-// );
-// redisClient.auth("zjPKzUaStEUId0o23JdDoM8IF5SLaJtQ", function (err) {
-//     if (err) throw err;
-// });
+const redisClient = redis.createClient(
+    14052,
+    "redis-14052.c305.ap-south-1-1.ec2.cloud.redislabs.com",
+    { no_ready_check: true }
+);
+redisClient.auth("gpd3216GpppUJju5Xphfwl3cd3oS5MtO", function (err) {
+    if (err) throw err;
+});
 
-// redisClient.on("connect", async function () {
-//     console.log("Connected to Redis..");
-// });
+redisClient.on("connect", async function () {
+    console.log("Connected to Redis..");
+});
 //connection established😮😮😮=================================================
 
 
@@ -59,26 +59,26 @@ const urlshortner = async (req, res) => {
 
 //======================================================[GET URL API]===========================================================================
 //🛰🛰🛰Redis calls
-// const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
-// const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
+const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
+const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
 const getUrl = async function (req,res) {
     try {
         let code = req.params.urlCode
-        // let Url = await GET_ASYNC(`${req.params.urlCode}`)
-        //console.log(Url)
-        // if (!Url) {
+        let Url = await GET_ASYNC(`${req.params.urlCode}`)
+        console.log(Url)
+        if (!Url) {
 
             let checkdb = await urlModel.findOne({ urlCode: code });
             
             if (!checkdb) return res.status(404).send({ status: false, message: `No url found with ${code}  code` })
-            // await SET_ASYNC(`${req.params.urlCode}`, JSON.stringify(checkdb.longUrl))
+            await SET_ASYNC(`${req.params.urlCode}`, JSON.stringify(checkdb.longUrl))
             
             return res.redirect(301,checkdb.longUrl)
             
-        // }
+        }
         
-        // return res.redirect(301,Url)
+        return res.redirect(301,Url)
         
     }
     catch (err) {
