@@ -66,7 +66,7 @@ const getUrl = async function (req, res) {
     try {
         let code = req.params.urlCode
         let Url = await GET_ASYNC(`${req.params.urlCode}`)
-        console.log(Url)
+        // console.log(Url)
         if (!Url) {
 
             let checkdb = await urlModel.findOne({ urlCode: code });
