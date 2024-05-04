@@ -22,13 +22,13 @@ mongoose
 
 app.use("/", route)
 
-app.use(express.static('./client/build'));
+/* app.use(express.static('./client/build'));
 
 app.get('/*', (req, res) =>
 
   res.sendFile('index.html', { root: 'client/build' })
 
-);
+); */
 
 app.listen(port, () => {
   console.log(`App listening on port ${port}`);
